@@ -13,6 +13,8 @@ import {QuestionService} from "./risk-survey/question.service";
 import {AnswerService} from "./risk-survey/answer.service";
 import {RoundProgressModule} from "angular-svg-round-progressbar";
 import {NgxPaginationModule} from "ngx-pagination";
+import {MomentModule} from "angular2-moment";
+import {NgIdleKeepaliveModule} from "@ng-idle/keepalive";
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import {NgxPaginationModule} from "ngx-pagination";
     MdProgressSpinnerModule,
     MdSliderModule,
     RoundProgressModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    MomentModule,
+    NgIdleKeepaliveModule.forRoot()
   ],
   providers: [QuestionService, AnswerService],
   bootstrap: [AppComponent]

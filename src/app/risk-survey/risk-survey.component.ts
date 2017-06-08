@@ -5,6 +5,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {QuestionService} from "./question.service";
 import {Question} from "../shared/question.model";
 import {AnswerService} from "./answer.service";
+import {DEFAULT_INTERRUPTSOURCES, Idle} from "@ng-idle/core";
+import {Keepalive} from "@ng-idle/keepalive";
 
 @Component({
   selector: 'app-risk-survey',
@@ -12,7 +14,7 @@ import {AnswerService} from "./answer.service";
   styleUrls: ['./risk-survey.component.css']
 })
 
-export class RiskSurveyComponent implements OnInit, OnDestroy{
+export class RiskSurveyComponent implements OnInit, OnDestroy {
 
   questions: Question[];
   answers: any[] = [];
@@ -20,7 +22,36 @@ export class RiskSurveyComponent implements OnInit, OnDestroy{
   riskScore = 100;
   collection = [];
 
-  constructor(private questionService: QuestionService, private answerService: AnswerService) { }
+  idleState = 'Not started.';
+  timedOut = false;
+  lastPing?: Date = null;
+
+  constructor(
+    private questionService: QuestionService,
+    private answerService: AnswerService,
+    private idle: Idle,
+    private keepalive: Keepalive) {
+    idle.setIdle(5);
+    // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
+    idle.setTimeout(5);
+    // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
+    idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
+
+    idle.onIdleEnd.subscribe(() => this.idleState = 'No longer idle.');
+    idle.onTimeout.subscribe(() => {
+      this.idleState = 'Timed out!';
+      this.timedOut = true;
+    });
+    idle.onIdleStart.subscribe(() => this.idleState = 'You\'ve gone idle!');
+    idle.onTimeoutWarning.subscribe((countdown) => this.idleState = 'You will time out in ' + countdown + ' seconds!');
+
+    // sets the ping interval to 15 seconds
+    keepalive.interval(15);
+
+    keepalive.onPing.subscribe(() => this.lastPing = new Date());
+
+    this.reset();
+  }
 
   ngOnInit() {
 
@@ -37,9 +68,11 @@ export class RiskSurveyComponent implements OnInit, OnDestroy{
       );
 
     // Used for pagination (ngx-pagination)
-    for (let i = 1; i <= this.questions.length; i++) {
-      this.collection.push(`item ${i}`);
-    }
+    // if (this.questions.length !== null) {
+    //   for (let i = 1; i <= this.questions.length; i++) {
+    //     this.collection.push(`item ${i}`);
+    //   }
+    // }
 
   }
 
@@ -49,6 +82,12 @@ export class RiskSurveyComponent implements OnInit, OnDestroy{
     this.riskScore -= i;
     console.log(i);
     console.log(this.riskScore);
+  }
+
+  reset() {
+    this.idle.watch();
+    this.idleState = 'Started.';
+    this.timedOut = false;
   }
 
   onSave() {

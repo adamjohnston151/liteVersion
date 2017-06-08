@@ -5,7 +5,7 @@
     </div>
     <div class="col-md-6">
      <div class = "row">
-       <ul *ngFor="let question of questions | paginate: {itemsPerPage: 1, currentPage: p}; let i = index">
+       <ul *ngFor="let question of questions | paginate: {itemsPerPage: 5, currentPage: p}; let i = index">
          <li> {{question.id}} | {{question.name}}</li>
          <input type="range" min="0" [max]="question.riskWeighting" [(ngModel)]="answers[i]" step=".1" (change)="scoreTracker(answers[i])">
          {{answers[i]}}
@@ -20,3 +20,6 @@
 </div>
 <button (click)="checkAnswers()">Check Answers</button>
 <button routerLink="/">Navigate away</button>
+<p><strong>{{idleState}}</strong></p>
+<p *ngIf="lastPing"><small>Last keepalive ping <strong>{{lastPing | amTimeAgo}}</strong></small></p>
+<button (click)="reset()" *ngIf="timedOut">Restart</button>
