@@ -8,7 +8,15 @@
        <ul *ngFor="let question of questions | paginate: {itemsPerPage: 5, currentPage: p}; let i = index">
          <li> {{question.id}} | {{question.name}}</li>
          <input type="range" min="0" [max]="question.riskWeighting" [(ngModel)]="answers[i]" step=".1" (change)="scoreTracker(answers[i])">
-         {{answers[i]}}
+         <div *ngIf="answers[i] < question.riskWeighting/2">
+            <img src="../../assets/superthumb.jpg" style="width: 50px; height: 50px">
+         </div>
+         <div *ngIf="answers[i] === question.riskWeighting/2">
+           <img src="../../assets/neutralFace.png" style="width: 50px; height: 50px">
+         </div>
+         <div *ngIf="answers[i] > question.riskWeighting/2">
+           <img src="../../assets/happyFace.png" style="width: 50px; height: 50px">
+         </div>
          <br>
        </ul>
        <pagination-controls (pageChange)="p = $event"></pagination-controls>
