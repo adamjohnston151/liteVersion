@@ -1,0 +1,35 @@
+<div class="container-fluid" id = "navigationBar">
+<div class="navbar-header">
+  <a class="navbar-brand" href="#">Risk3Sixty</a>
+</div>
+<ul class="nav navbar-nav navbar-right">
+  <li><a href="#">WELCOME</a></li>
+  <li><a href="#">WHO WE ARE</a></li>
+  <li><a href="#">INSIGHTS</a></li>
+  <li><a href="#">CONTACT</a></li>
+  <li><a href="#">TOOLS</a></li>
+
+  <!--<li class="dropdown" appDropdown *ngIf = "!isAuthenticated()">-->
+    <!--<a style="cursor: pointer;" class="dropdown-toggle" role="button">ACCOUNT<span class="caret"></span></a>-->
+    <!--<ul class="dropdown-menu">-->
+      <!--<li><a style="cursor: pointer;" routerLink="/signin">Login</a></li>-->
+      <!--<li><a style="cursor: pointer;" routerLink = "/register">Register</a></li>-->
+    <!--</ul>-->
+  <!--</li>-->
+
+  <!--Dropdown directive needs to be added-->
+  <li class="dropdown">
+    <a style="cursor: pointer;" class="dropdown-toggle" role="button">ACCOUNT<span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li><a style="cursor: pointer;" routerLink="#">Logout</a></li>
+      <li><a style="cursor: pointer;" routerLink = "#">My Settings</a></li>
+    </ul>
+  </li>
+
+</ul>
+
+<!--<button (click)="show = !show">{{show ? 'hide' : 'show'}}</button>
+
+<div *ngIf = "show; else elseBlock">Text to show</div>
+<ng-template #elseBlock>Alternate text while primary text is hidden</ng-template> -->
+</div>

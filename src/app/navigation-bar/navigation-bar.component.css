@@ -1,0 +1,11 @@
+#navigationBar{
+  background-color: #1F3A6C;
+}
+
+li a{
+  color: white;
+}
+
+div.navbar-header a {
+  color: white;
+}
