@@ -8,7 +8,7 @@ import {AnswerService} from "./answer.service";
 import {DEFAULT_INTERRUPTSOURCES, Idle} from "@ng-idle/core";
 import {Keepalive} from "@ng-idle/keepalive";
 import {FileUploader} from "ng2-file-upload";
-import {UserProfileService} from "../shared/user-profile.service";
+import {doesNotThrow} from "assert";
 
 const URL = '../../assets/';
 
@@ -36,8 +36,7 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
     private questionService: QuestionService,
     private answerService: AnswerService,
     private idle: Idle,
-    private keepalive: Keepalive,
-    private userProfileService: UserProfileService) {}
+    private keepalive: Keepalive) {}
 
   ngOnInit() {
 
@@ -53,7 +52,8 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
     // Gets answer data from service
     this.answerService.getAnswers()
       .subscribe(
-        (answers: any[]) => this.answers = answers
+        (answers: any[]) => this.answers = answers,
+        (err) => doesNotThrow
       );
 
   }
@@ -66,12 +66,14 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
     console.log(this.riskScore);
   }
 
+  // Resets user to non-idle state
   reset() {
     this.idle.watch();
     this.idleState = 'Started.';
     this.timedOut = false;
   }
 
+  // Monitors user activity
   idleMonitor() {
     this.idle.setIdle(1);
     // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
