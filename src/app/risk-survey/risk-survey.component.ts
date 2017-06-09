@@ -1,5 +1,5 @@
-//TODO implement autosave feature (already done partly with ngOnDestroy)
-//TODO implement pagination feature
+// TODO implement autosave feature (already done partly with ngOnDestroy)
+// TODO fix answers feature.  If no answers exist, code breaks
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {QuestionService} from "./question.service";
@@ -7,6 +7,10 @@ import {Question} from "../shared/question.model";
 import {AnswerService} from "./answer.service";
 import {DEFAULT_INTERRUPTSOURCES, Idle} from "@ng-idle/core";
 import {Keepalive} from "@ng-idle/keepalive";
+import {FileUploader} from "ng2-file-upload";
+import {UserProfileService} from "../shared/user-profile.service";
+
+const URL = '../../assets/';
 
 @Component({
   selector: 'app-risk-survey',
@@ -20,17 +24,20 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
   answers: any[] = [];
   progressScore = 0;
   riskScore = 100;
-  collection = [];
+  itemsPerPage = 3;
+  possibleValuesPerPage = [1, 3, 5];
 
   idleState = 'Not started.';
   timedOut = false;
   lastPing?: Date = null;
+  uploader: FileUploader = new FileUploader({url: URL});
 
   constructor(
     private questionService: QuestionService,
     private answerService: AnswerService,
     private idle: Idle,
-    private keepalive: Keepalive) {}
+    private keepalive: Keepalive,
+    private userProfileService: UserProfileService) {}
 
   ngOnInit() {
 
@@ -49,13 +56,6 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
         (answers: any[]) => this.answers = answers
       );
 
-    // Used for pagination (ngx-pagination)
-    // if (this.questions.length !== null) {
-    //   for (let i = 1; i <= this.questions.length; i++) {
-    //     this.collection.push(`item ${i}`);
-    //   }
-    // }
-
   }
 
   // Tracks progress scores
@@ -72,7 +72,7 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
     this.timedOut = false;
   }
 
-  idleMonitor(){
+  idleMonitor() {
     this.idle.setIdle(1);
     // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
     this.idle.setTimeout(1);
@@ -98,6 +98,10 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
       (response) => console.log(response),
       (error) => console.log(error)
     );
+  }
+
+  checkUrl(event: any) {
+    console.log(event);
   }
 
   checkAnswers() {

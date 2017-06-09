@@ -1,3 +1,5 @@
+<!--TODO keep track of only the image that has been uploaded-->
+
 <div class = "container">
     <div class="col-md-3">
       <round-progress [current]="60" [max]="100" [clockwise]="false"></round-progress>
@@ -5,7 +7,7 @@
     </div>
     <div class="col-md-6">
      <div class = "row">
-       <ul *ngFor="let question of questions | paginate: {itemsPerPage: 5, currentPage: p}; let i = index">
+       <ul *ngFor="let question of questions | paginate: {itemsPerPage: itemsPerPage, currentPage: p}; let i = index">
          <li> {{question.id}} | {{question.name}}</li>
          <input type="range" min="0" [max]="question.riskWeighting" [(ngModel)]="answers[i]" step=".1" (change)="scoreTracker(answers[i])">
          <div *ngIf="answers[i] < question.riskWeighting/2">
@@ -20,6 +22,13 @@
          <br>
        </ul>
        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+       <select
+       required
+       [(ngModel)] ="itemsPerPage">
+       <option
+         *ngFor="let options of possibleValuesPerPage"
+         [value]="options" (change)="checkItems(options)">{{options}}</option>
+       </select>
      </div>
     </div>
     <div class="col-md-3">
@@ -31,3 +40,10 @@
 <p><strong>{{idleState}}</strong></p>
 <p *ngIf="lastPing"><small>Last keepalive ping <strong>{{lastPing | amTimeAgo}}</strong></small></p>
 <button (click)="reset()" *ngIf="timedOut">Restart</button>
+<input type="file" ng2FileSelect [uploader]="uploader" (change)="checkUrl($event)" accept="image/jpeg, image/x-png"/>
+<img [src]="">
+<button (click)="checkUrl()">Check URL</button>
+
+<!--uploader.queue[0]._file.name-->
+
+

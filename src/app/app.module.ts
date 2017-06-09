@@ -15,12 +15,15 @@ import {RoundProgressModule} from "angular-svg-round-progressbar";
 import {NgxPaginationModule} from "ngx-pagination";
 import {MomentModule} from "angular2-moment";
 import {NgIdleKeepaliveModule} from "@ng-idle/keepalive";
+import {FileSelectDirective} from "ng2-file-upload";
+import {UserProfileService} from "./shared/user-profile.service";
 
 @NgModule({
   declarations: [
     AppComponent,
     RiskSurveyComponent,
     NavigationBarComponent,
+    FileSelectDirective
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,7 @@ import {NgIdleKeepaliveModule} from "@ng-idle/keepalive";
     MomentModule,
     NgIdleKeepaliveModule.forRoot()
   ],
-  providers: [QuestionService, AnswerService],
+  providers: [QuestionService, AnswerService, UserProfileService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
