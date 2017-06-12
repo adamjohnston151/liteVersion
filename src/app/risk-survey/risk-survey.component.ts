@@ -1,3 +1,4 @@
+// TODO using json-server gives strange error
 // TODO implement autosave feature (already done partly with ngOnDestroy)
 // TODO fix answers feature.  If no answers exist, code breaks
 
@@ -8,7 +9,6 @@ import {AnswerService} from "./answer.service";
 import {DEFAULT_INTERRUPTSOURCES, Idle} from "@ng-idle/core";
 import {Keepalive} from "@ng-idle/keepalive";
 import {FileUploader} from "ng2-file-upload";
-import {doesNotThrow} from "assert";
 
 const URL = '../../assets/';
 
@@ -25,8 +25,7 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
   progressScore = 0;
   riskScore = 100;
   itemsPerPage = 3;
-  possibleValuesPerPage = [1, 3, 5];
-
+  possibleValuesPerPage = [1, 3, 5, 10, 25, 50];
   idleState = 'Not started.';
   timedOut = false;
   lastPing?: Date = null;
@@ -50,20 +49,21 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
       );
 
     // Gets answer data from service
-    this.answerService.getAnswers()
-      .subscribe(
-        (answers: any[]) => this.answers = answers,
-        (err) => doesNotThrow
-      );
+    // this.answerService.getAnswers()
+    //   .subscribe(
+    //     (answers: any[]) => this.answers = answers,
+    //     (err) => doesNotThrow
+    //   );
 
   }
 
   // Tracks progress scores
   scoreTracker(i: number) {
-    this.progressScore = (this.answers.length / this.questions.length) * 100;
+    // this.progressScore = (this.answers.length / this.questions.length) * 100;
     this.riskScore -= i;
     console.log(i);
     console.log(this.riskScore);
+    console.log(this.questions);
   }
 
   // Resets user to non-idle state
@@ -104,10 +104,6 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
 
   checkUrl(event: any) {
     console.log(event);
-  }
-
-  checkAnswers() {
-    console.log(this.answers);
   }
 
   // This is not always called (navigating away by URL)

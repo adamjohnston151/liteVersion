@@ -1,7 +1,6 @@
-export class Question{
+export class Question {
   constructor(
-    public guidance: number,
-    public id: string,
-    public name: string,
+    public guidance: string,
+    public title: string,
     public riskWeighting: number) {}
 }
