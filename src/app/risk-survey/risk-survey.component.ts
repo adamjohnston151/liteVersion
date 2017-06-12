@@ -1,4 +1,3 @@
-// TODO using json-server gives strange error
 // TODO implement autosave feature (already done partly with ngOnDestroy)
 // TODO fix answers feature.  If no answers exist, code breaks
 
@@ -9,6 +8,7 @@ import {AnswerService} from "./answer.service";
 import {DEFAULT_INTERRUPTSOURCES, Idle} from "@ng-idle/core";
 import {Keepalive} from "@ng-idle/keepalive";
 import {FileUploader} from "ng2-file-upload";
+import {Answer} from "../shared/answer.model";
 
 const URL = '../../assets/';
 
@@ -21,10 +21,11 @@ const URL = '../../assets/';
 export class RiskSurveyComponent implements OnInit, OnDestroy {
 
   questions: Question[];
-  answers: any[] = [];
+  answers: Answer[];
+
   progressScore = 0;
   riskScore = 100;
-  itemsPerPage = 3;
+  itemsPerPage = 10;
   possibleValuesPerPage = [1, 3, 5, 10, 25, 50];
   idleState = 'Not started.';
   timedOut = false;
@@ -45,25 +46,24 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
     // Gets question data from service
     this.questionService.getQuestions()
       .subscribe(
-        (questions: any[]) => this.questions = questions
+        (questions: Question[]) => this.questions = questions
       );
 
     // Gets answer data from service
-    // this.answerService.getAnswers()
-    //   .subscribe(
-    //     (answers: any[]) => this.answers = answers,
-    //     (err) => doesNotThrow
-    //   );
+    this.answerService.getAnswers()
+      .subscribe(
+        (answers: Answer[]) => this.answers = answers
+      );
 
   }
 
   // Tracks progress scores
   scoreTracker(i: number) {
     // this.progressScore = (this.answers.length / this.questions.length) * 100;
-    this.riskScore -= i;
-    console.log(i);
-    console.log(this.riskScore);
-    console.log(this.questions);
+    const answer = new Answer(i);
+    this.answerService.pushAnswers(answer);
+    // console.log(i);
+    // this.riskScore -= i;
   }
 
   // Resets user to non-idle state
@@ -96,10 +96,12 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
   }
 
   onSave() {
-    this.answerService.storeAnswers(this.answers).subscribe(
-      (response) => console.log(response),
-      (error) => console.log(error)
-    );
+   console.log(this.answers);
+   this.answerService.storeAnswers(this.answers);
+     // .subscribe(
+     //   data => console.log(data),
+     //   error => console.error(error)
+     // );
   }
 
   checkUrl(event: any) {
@@ -109,7 +111,6 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
   // This is not always called (navigating away by URL)
   // Only called if information in answers has changed from when it was loaded
   ngOnDestroy() {
-   this.answerService.storeAnswers(this.answers);
   }
 
 }

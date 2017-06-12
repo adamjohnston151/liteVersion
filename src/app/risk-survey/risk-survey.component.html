@@ -1,44 +1,58 @@
 <!--TODO keep track of only the image that has been uploaded-->
-
+<br>
 <div class = "container">
-    <div class="col-md-3">
-      <round-progress [current]="60" [max]="100" [clockwise]="false"></round-progress>
-      <round-progress [current]="50" [max]="100"></round-progress>
+  <div class="col-md-3">
+    <round-progress [current]="60" [max]="100" [clockwise]="false" [semicircle]="true"></round-progress>
+    <br>
+    <round-progress [current]="50" [max]="100" [semicircle]="true"></round-progress>
+  </div>
+  <div class="col-md-7">
+
+    <div class = "row">
+      <ul class="list-group" *ngFor="let question of questions  | paginate: {itemsPerPage: itemsPerPage, currentPage: p}; let answer of answers; let i = index">
+        <li class="list-group-item">
+          {{question.title}}
+            <span class="glyphicon glyphicon-info-sign pull-right" mdTooltipPosition="below" mdTooltip={{question.guidance}}></span>
+        </li>
+        <div id="slider">
+          <input type="range" min="0" [max]="question.riskWeighting" [(ngModel)]="answers[i]" step=".1" (change)="scoreTracker(answers[i])">
+        </div>
+      <!--<div *ngIf="answer.previousAnswer < question.riskWeighting/2">-->
+      <!--<img src="../../assets/superthumb.jpg" style="width: 50px; height: 50px">-->
+      <!--</div>-->
+      <!--<div *ngIf="answer.previousAnswer === question.riskWeighting/2">-->
+      <!--<img src="../../assets/neutralFace.png" style="width: 50px; height: 50px">-->
+      <!--</div>-->
+      <!--<div *ngIf="answer.previousAnswer > question.riskWeighting/2">-->
+      <!--<img src="../../assets/happyFace.png" style="width: 50px; height: 50px">-->
+      <!--</div>-->
+      <!--<br>-->
+      </ul>
     </div>
-    <div class="col-md-6">
-     <div class = "row">
-       <ul *ngFor="let question of questions  | paginate: {itemsPerPage: itemsPerPage, currentPage: p}; let i = index">
-         <li>{{question.title}} {{question.riskWeighting}} {{question.guidance}}</li>
-         <input type="range" min="0" [max]="question.riskWeighting" [(ngModel)]="answers[i]" step=".1" (change)="scoreTracker(answers[i])">
-         <div *ngIf="answers[i] < question.riskWeighting/2">
-            <img src="../../assets/superthumb.jpg" style="width: 50px; height: 50px">
-         </div>
-         <div *ngIf="answers[i] === question.riskWeighting/2">
-           <img src="../../assets/neutralFace.png" style="width: 50px; height: 50px">
-         </div>
-         <div *ngIf="answers[i] > question.riskWeighting/2">
-           <img src="../../assets/happyFace.png" style="width: 50px; height: 50px">
-         </div>
-         <br>
-       </ul>
-       <div class="row">
-         <div class="col-md-8">
-           <pagination-controls (pageChange)="p = $event"></pagination-controls>
-         </div>
-         <div class="col-md-4">
-           <select
-             required
-             [(ngModel)] ="itemsPerPage">
-             <option
-               *ngFor="let options of possibleValuesPerPage"
-               [value]="options" (change)="checkItems(options)">{{options}}</option>
-           </select>
-         </div>
-       </div>
-     </div>
+
+    <div class="row">
+      <div class="col-md-8">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+      <div class="col-md-4">
+        <div class="col-md-4">
+          <select
+          required
+          [(ngModel)] ="itemsPerPage">
+          <option
+          *ngFor="let options of possibleValuesPerPage"
+          [value]="options" (change)="checkItems(options)">{{options}}</option>
+          </select>
+        </div>
+        <div class="col-md-8">
+          <button class="btn btn-primary" (click)="onSave()">Save Answers</button>
+        </div>
+      </div>
     </div>
-    <div class="col-md-3"></div>
+  </div>
+  <div class="col-md-1"></div>
 </div>
+
 <button routerLink="/">Navigate away</button>
 <p><strong>{{idleState}}</strong></p>
 <p *ngIf="lastPing"><small>Last keepalive ping <strong>{{lastPing | amTimeAgo}}</strong></small></p>

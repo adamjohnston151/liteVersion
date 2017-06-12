@@ -8,7 +8,7 @@ import { RiskSurveyComponent } from './risk-survey/risk-survey.component';
 import {AppRoutingModule} from "./app-routing.module";
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {MdProgressSpinnerModule, MdSliderModule} from "@angular/material";
+import {MdProgressSpinnerModule, MdSliderModule, MdTooltipModule} from "@angular/material";
 import {QuestionService} from "./risk-survey/question.service";
 import {AnswerService} from "./risk-survey/answer.service";
 import {RoundProgressModule} from "angular-svg-round-progressbar";
@@ -23,7 +23,7 @@ import {UserProfileService} from "./shared/user-profile.service";
     AppComponent,
     RiskSurveyComponent,
     NavigationBarComponent,
-    FileSelectDirective
+    FileSelectDirective,
   ],
   imports: [
     BrowserModule,
@@ -35,6 +35,7 @@ import {UserProfileService} from "./shared/user-profile.service";
     MdSliderModule,
     RoundProgressModule,
     NgxPaginationModule,
+    MdTooltipModule,
     MomentModule,
     NgIdleKeepaliveModule.forRoot()
   ],
