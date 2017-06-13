@@ -18,15 +18,9 @@ const URL = '../../assets/';
 })
 
 export class RiskSurveyComponent implements OnInit, OnDestroy {
-  get answers(): Answer[] {
-    return this._answers;
-  }
 
-  set answers(value: Answer[]) {
-    this._answers = value;
-  }
 
-  private _answers: Answer[] = [];
+  answers: Answer[] = [];
   idleState = 'Not started.';
   itemsPerPage = 10;
   lastPing?: Date = null;
@@ -56,18 +50,22 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
     // Gets answer data from service
     this.dataService.getAnswers()
       .subscribe(
-        (answers: Answer[]) => this._answers = answers
+        (answers: Answer[]) => this.answers = answers
       );
 
   }
 
   // Tracks progress scores
-  scoreTracker(i: number) {
+  scoreTracker(sliderValue: number, i: number) {
     // this.progressScore = (this.answers.length / this.questions.length) * 100;
-    const answer = new Answer(i);
-    this.dataService.pushAnswers(answer);
-    // console.log(i);
+    this.answers.push(new Answer(sliderValue));
+    console.log(sliderValue);
+    console.log(this.answers);
     // this.riskScore -= i;
+  }
+
+  updateValue(i: number) {
+    console.log(this.answers[i]);
   }
 
   // Resets user to non-idle state
@@ -94,7 +92,7 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
   }
 
   onSave() {
-   this.dataService.storeAnswers(this._answers);
+   this.dataService.storeAnswers(this.answers);
      // .subscribe(
      //   data => console.log(data),
      //   error => console.error(error)
