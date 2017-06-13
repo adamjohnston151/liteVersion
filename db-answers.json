@@ -1,4 +1,15 @@
 {
   "answers": [
-  ]
+    [
+      {
+        "userAnswer": 1
+      },
+      {
+        "userAnswer": 1.2
+      },
+      {
+        "userAnswer": 0.5
+      }
+    ]
+    ]
 }

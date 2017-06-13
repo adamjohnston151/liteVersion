@@ -2,13 +2,12 @@
 // TODO fix answers feature.  If no answers exist, code breaks
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {QuestionService} from "./question.service";
-import {Question} from "../shared/question.model";
-import {AnswerService} from "./answer.service";
-import {DEFAULT_INTERRUPTSOURCES, Idle} from "@ng-idle/core";
-import {Keepalive} from "@ng-idle/keepalive";
-import {FileUploader} from "ng2-file-upload";
-import {Answer} from "../shared/answer.model";
+import {Question} from '../shared/question.model';
+import {FileUploader} from 'ng2-file-upload';
+import {DataService} from './data.service';
+import {DEFAULT_INTERRUPTSOURCES, Idle} from '@ng-idle/core';
+import {Keepalive} from '@ng-idle/keepalive';
+import {Answer} from '../shared/answer.model';
 
 const URL = '../../assets/';
 
@@ -19,22 +18,27 @@ const URL = '../../assets/';
 })
 
 export class RiskSurveyComponent implements OnInit, OnDestroy {
+  get answers(): Answer[] {
+    return this._answers;
+  }
 
-  questions: Question[];
-  answers: Answer[];
+  set answers(value: Answer[]) {
+    this._answers = value;
+  }
 
-  progressScore = 0;
-  riskScore = 100;
-  itemsPerPage = 10;
-  possibleValuesPerPage = [1, 3, 5, 10, 25, 50];
+  private _answers: Answer[] = [];
   idleState = 'Not started.';
-  timedOut = false;
+  itemsPerPage = 10;
   lastPing?: Date = null;
+  possibleValuesPerPage = [1, 3, 5, 10, 25, 50];
+  progressScore = 0;
+  questions: Question[];
+  riskScore = 100;
+  timedOut = false;
   uploader: FileUploader = new FileUploader({url: URL});
 
   constructor(
-    private questionService: QuestionService,
-    private answerService: AnswerService,
+    private dataService: DataService,
     private idle: Idle,
     private keepalive: Keepalive) {}
 
@@ -44,15 +48,15 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
     this.reset();
 
     // Gets question data from service
-    this.questionService.getQuestions()
+    this.dataService.getQuestions()
       .subscribe(
         (questions: Question[]) => this.questions = questions
       );
 
     // Gets answer data from service
-    this.answerService.getAnswers()
+    this.dataService.getAnswers()
       .subscribe(
-        (answers: Answer[]) => this.answers = answers
+        (answers: Answer[]) => this._answers = answers
       );
 
   }
@@ -61,7 +65,7 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
   scoreTracker(i: number) {
     // this.progressScore = (this.answers.length / this.questions.length) * 100;
     const answer = new Answer(i);
-    this.answerService.pushAnswers(answer);
+    this.dataService.pushAnswers(answer);
     // console.log(i);
     // this.riskScore -= i;
   }
@@ -76,11 +80,8 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
   // Monitors user activity
   idleMonitor() {
     this.idle.setIdle(1);
-    // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
     this.idle.setTimeout(1);
-    // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
     this.idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
-
     this.idle.onIdleEnd.subscribe(() => this.idleState = 'No longer idle.');
     this.idle.onTimeout.subscribe(() => {
       this.idleState = 'Timed out!';
@@ -88,24 +89,16 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
     });
     this.idle.onIdleStart.subscribe(() => this.idleState = 'You\'ve gone idle!');
     this.idle.onTimeoutWarning.subscribe((countdown) => this.idleState = 'You will time out in ' + countdown + ' seconds!');
-
-    // sets the ping interval to 15 seconds
     this.keepalive.interval(15);
-
     this.keepalive.onPing.subscribe(() => this.lastPing = new Date());
   }
 
   onSave() {
-   console.log(this.answers);
-   this.answerService.storeAnswers(this.answers);
+   this.dataService.storeAnswers(this._answers);
      // .subscribe(
      //   data => console.log(data),
      //   error => console.error(error)
      // );
-  }
-
-  checkUrl(event: any) {
-    console.log(event);
   }
 
   // This is not always called (navigating away by URL)
