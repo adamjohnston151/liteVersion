@@ -1,5 +1,5 @@
-// TODO implement autosave feature (already done partly with ngOnDestroy)
-// TODO fix answers feature.  If no answers exist, code breaks
+// TODO implement autosave feature (can do partly with ngOnDestroy)
+// TODO check why number is "1" and  not 1, for example.  With JSON, it should be 1
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Question} from '../shared/question.model';
@@ -59,13 +59,13 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
   scoreTracker(sliderValue: number, i: number) {
     // this.progressScore = (this.answers.length / this.questions.length) * 100;
     this.answers.push(new Answer(sliderValue));
-    console.log(sliderValue);
-    console.log(this.answers);
+    console.log(this.answers[i].userAnswer);
     // this.riskScore -= i;
   }
 
   updateValue(i: number) {
-    console.log(this.answers[i]);
+    // console.log(i);
+    // console.log(JSON.stringify(this.answers));
   }
 
   // Resets user to non-idle state
@@ -93,6 +93,7 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
 
   onSave() {
    this.dataService.storeAnswers(this.answers);
+   console.log(this.answers);
      // .subscribe(
      //   data => console.log(data),
      //   error => console.error(error)
