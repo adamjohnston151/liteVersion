@@ -1,13 +1,44 @@
 {
   "answers": [
-      {
-        "userAnswer": 1
-      },
-      {
-        "userAnswer": 1.2
-      },
-      {
-        "userAnswer": 0.5
-      }
-    ]
+    {
+      "id": 1,
+      "userAnswer": 0.3
+    },
+    {
+      "id": 2,
+      "userAnswer": 1.2
+    },
+    {
+      "id": 3,
+      "userAnswer": 0.5
+    },
+    {
+      "id": 4,
+      "userAnswer": "2.3"
+    },
+    {
+      "id": 5,
+      "userAnswer": "1"
+    },
+    {
+      "id": 6,
+      "userAnswer": "2.3"
+    },
+    {
+      "id": 7,
+      "userAnswer": "0.7"
+    },
+    {
+      "id": 8,
+      "userAnswer": "0.4"
+    },
+    {
+      "id": 9,
+      "userAnswer": "0.6"
+    },
+    {
+      "id": 10,
+      "userAnswer": "1.6"
+    }
+  ]
 }

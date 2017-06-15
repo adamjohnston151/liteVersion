@@ -58,14 +58,25 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
   // Tracks progress scores
   scoreTracker(sliderValue: number, i: number) {
     // this.progressScore = (this.answers.length / this.questions.length) * 100;
-    this.answers.push(new Answer(sliderValue));
-    console.log(this.answers[i].userAnswer);
+    // this.answers.push(new Answer(sliderValue));
+    // console.log(this.answers[i].userAnswer);
     // this.riskScore -= i;
+    const answer = new Answer(i + 1, sliderValue);
+    this.dataService.saveAnswers(answer)
+      .subscribe(
+        res => console.log(res),
+        err => console.log(err)
+      );
   }
 
   updateValue(i: number) {
     // console.log(i);
     // console.log(JSON.stringify(this.answers));
+    this.dataService.patchAnswers(this.answers[i])
+      .subscribe(
+        res => console.log(res),
+        err => console.log(err)
+      );
   }
 
   // Resets user to non-idle state
@@ -92,8 +103,8 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
   }
 
   onSave() {
-   this.dataService.storeAnswers(this.answers);
-   console.log(this.answers);
+   // this.dataService.storeAnswers(this.answers);
+   // console.log(this.answers);
      // .subscribe(
      //   data => console.log(data),
      //   error => console.error(error)
@@ -103,6 +114,7 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
   // This is not always called (navigating away by URL)
   // Only called if information in answers has changed from when it was loaded
   ngOnDestroy() {
+    console.log(this.answers);
   }
 
 }
