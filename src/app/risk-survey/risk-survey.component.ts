@@ -1,7 +1,7 @@
 // TODO implement autosave feature (can do partly with ngOnDestroy)
 // TODO check why number is "1" and  not 1, for example.  With JSON, it should be 1
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, QueryList} from '@angular/core';
 import {Question} from '../shared/question.model';
 import {FileUploader} from 'ng2-file-upload';
 import {DataService} from './data.service';
@@ -25,9 +25,7 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
   itemsPerPage = 10;
   lastPing?: Date = null;
   possibleValuesPerPage = [1, 3, 5, 10, 25, 50];
-  progressScore = 0;
   questions: Question[];
-  riskScore = 100;
   timedOut = false;
   uploader: FileUploader = new FileUploader({url: URL});
 
@@ -56,13 +54,14 @@ export class RiskSurveyComponent implements OnInit, OnDestroy {
   }
 
   // Tracks progress scores
-  scoreTracker(sliderValue: number, i: number) {
+  saveNewAnswer(sliderValue: number, i: number) {
     // this.progressScore = (this.answers.length / this.questions.length) * 100;
     // this.answers.push(new Answer(sliderValue));
     // console.log(this.answers[i].userAnswer);
     // this.riskScore -= i;
     const answer = new Answer(i + 1, sliderValue);
-    this.dataService.saveAnswers(answer)
+    this.dataService.addAnswerToArray(answer);
+    this.dataService.saveAnswers(this.answers)
       .subscribe(
         res => console.log(res),
         err => console.log(err)

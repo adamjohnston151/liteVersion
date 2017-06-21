@@ -12,6 +12,7 @@ export class DataService {
 
   private answers: Answer[] = [];
   private questions: Question[] = [];
+  private answersArrayLength: number;
 
   constructor(private http: Http) {}
 
@@ -39,15 +40,20 @@ export class DataService {
           transformedAnswers.push(new Answer(answer.id, answer.userAnswer));
         }
         this.answers = transformedAnswers;
+        this.answersArrayLength =  transformedAnswers.length;
         return transformedAnswers;
       })
       .catch((error: Response) => Observable.throw(error.json()));
   }
 
+  addAnswerToArray(answer: Answer) {
+     this.answers.push(answer);
+  }
+
   // Push new update values into array
-  saveAnswers(answer: Answer) {
-    this.answers.push(answer);
-    const body = JSON.stringify(answer);
+  saveAnswers(answers: Answer[]) {
+    // this.answers.push(answer);
+    const body = JSON.stringify(answers);
     const headers = new Headers({'Content-Type': 'application/json'});
     return this.http.post('http://localhost:3004/answers', body, {headers: headers})
       .map((response: Response) => response.json())

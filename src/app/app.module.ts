@@ -7,7 +7,10 @@ import { AppComponent } from './app.component';
 import { RiskSurveyComponent } from './risk-survey/risk-survey.component';
 import {AppRoutingModule} from './app-routing.module';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
-import {MdProgressSpinnerModule, MdSliderModule, MdTooltipModule} from '@angular/material';
+import {
+  MaterialModule, MdDialogModule, MdDialogRef, MdProgressSpinnerModule, MdSliderModule,
+  MdTooltipModule
+} from '@angular/material';
 import {DataService} from './risk-survey/data.service';
 import {RoundProgressModule} from 'angular-svg-round-progressbar';
 import {NgxPaginationModule} from 'ngx-pagination';
@@ -16,6 +19,8 @@ import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
 import {FileSelectDirective} from 'ng2-file-upload';
 import {UserProfileService} from './shared/user-profile.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {PaginationModule} from 'ngx-bootstrap';
+import { ScoreBarsComponent } from './shared/score-bars/score-bars.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +28,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     RiskSurveyComponent,
     NavigationBarComponent,
     FileSelectDirective,
+    ScoreBarsComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +42,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     NgxPaginationModule,
     MdTooltipModule,
     MomentModule,
-    NgIdleKeepaliveModule.forRoot()
+    NgIdleKeepaliveModule.forRoot(),
+    PaginationModule.forRoot()
   ],
   providers: [DataService, UserProfileService],
   bootstrap: [AppComponent]

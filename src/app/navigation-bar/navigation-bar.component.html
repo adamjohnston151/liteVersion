@@ -1,35 +1,33 @@
-<div class="container-fluid" id = "navigationBar">
-<div class="navbar-header">
-  <a class="navbar-brand" href="#">Risk3Sixty</a>
-</div>
-<ul class="nav navbar-nav navbar-right">
-  <li><a routerLink="/">WELCOME</a></li>
-  <li><a routerLink="/risk-survey">WHO WE ARE</a></li>
-  <li><a href="#">INSIGHTS</a></li>
-  <li><a href="#">CONTACT</a></li>
-  <li><a href="#">TOOLS</a></li>
+<nav class="container-fluid" id = "navigationBar">
+  <div class="navbar-header">
+    <a class="navbar-brand" href="#">Risk3Sixty</a>
+  </div>
 
-  <!--<li class="dropdown" appDropdown *ngIf = "!isAuthenticated()">-->
-    <!--<a style="cursor: pointer;" class="dropdown-toggle" role="button">ACCOUNT<span class="caret"></span></a>-->
-    <!--<ul class="dropdown-menu">-->
-      <!--<li><a style="cursor: pointer;" routerLink="/signin">Login</a></li>-->
-      <!--<li><a style="cursor: pointer;" routerLink = "/register">Register</a></li>-->
-    <!--</ul>-->
-  <!--</li>-->
+  <ul class="nav navbar-nav navbar-right">
 
-  <!--Dropdown directive needs to be added-->
-  <li class="dropdown">
-    <a style="cursor: pointer;" class="dropdown-toggle" role="button">ACCOUNT<span class="caret"></span></a>
-    <ul class="dropdown-menu">
-      <li><a style="cursor: pointer;" routerLink="#">Logout</a></li>
-      <li><a style="cursor: pointer;" routerLink = "#">My Settings</a></li>
-    </ul>
-  </li>
+    <li><a routerLink="/">WELCOME</a></li>
+    <li><a routerLink="/risk-survey">WHO WE ARE</a></li>
+    <li><a href="#">INSIGHTS</a></li>
+    <li><a href="#">CONTACT</a></li>
+    <li><a href="#">TOOLS</a></li>
+    <li><a href="#" (mouseover)="invertColor()">HELP</a></li>
 
-</ul>
+    <!--<li class="dropdown" appDropdown *ngIf = "!isAuthenticated()">-->
+      <!--<a style="cursor: pointer;" class="dropdown-toggle" role="button">ACCOUNT<span class="caret"></span></a>-->
+      <!--<ul class="dropdown-menu">-->
+        <!--<li><a style="cursor: pointer;" routerLink="/signin">Login</a></li>-->
+        <!--<li><a style="cursor: pointer;" routerLink = "/register">Register</a></li>-->
+      <!--</ul>-->
+    <!--</li>-->
 
-<!--<button (click)="show = !show">{{show ? 'hide' : 'show'}}</button>
+    <!--Dropdown directive needs to be added-->
+    <li class="dropdown">
+      <a style="cursor: pointer;" class="dropdown-toggle" role="button">ACCOUNT<span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        <li><a style="cursor: pointer;" routerLink="#">Logout</a></li>
+        <li><a style="cursor: pointer;" routerLink = "#">My Settings</a></li>
+      </ul>
+    </li>
 
-<div *ngIf = "show; else elseBlock">Text to show</div>
-<ng-template #elseBlock>Alternate text while primary text is hidden</ng-template> -->
-</div>
+  </ul>
+</nav>

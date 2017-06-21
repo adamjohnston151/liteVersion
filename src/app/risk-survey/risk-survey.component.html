@@ -2,61 +2,56 @@
 <br>
 <div class = "container">
   <div class="col-md-3">
-    <round-progress [current]="60" [max]="100" [clockwise]="false" [semicircle]="true"></round-progress>
-    <br>
-    <round-progress [current]="50" [max]="100" [semicircle]="true"></round-progress>
+    <app-score-bars></app-score-bars>
   </div>
-  <div class="col-md-7">
-
-    <div class = "row">
-      <ul class="list-group" *ngFor="let question of questions  | paginate: {itemsPerPage: itemsPerPage, currentPage: p}; let answer of answers; let i = index">
-        <li class="list-group-item">
-          {{question.title}}
-            <span class="glyphicon glyphicon-info-sign pull-right" mdTooltipPosition="below" mdTooltip={{question.guidance}}></span>
-        </li>
-        <!--<div id="slider">-->
-          <!--<input type="range" *ngif="answers[i]" min="0" [max]="question.riskWeighting" step=".1" [(ngModel)]="answers[i].userAnswer" (change)="updateValue(i)">-->
-        <!--</div>-->
-        <div *ngIf="answers[i]; else elseBlock" id="slider">
-          <input type="range" min="0" [max]="question.riskWeighting" step=".1" [(ngModel)]="answers[i].userAnswer" (change)="updateValue(i)">
-        </div>
-        <ng-template #elseBlock>
-          <input type="range" min="0" [max]="question.riskWeighting" #valueTracker value="0" step=".1" (change)="scoreTracker(valueTracker.value, i)">
-        </ng-template>
-        <!--<div *ngIf="answer.previousAnswer < question.riskWeighting/2">-->
-        <!--<img src="../../assets/superthumb.jpg" style="width: 50px; height: 50px">-->
-        <!--</div>-->
-        <!--<div *ngIf="answer.previousAnswer === question.riskWeighting/2">-->
-        <!--<img src="../../assets/neutralFace.png" style="width: 50px; height: 50px">-->
-        <!--</div>-->
-        <!--<div *ngIf="answer.previousAnswer > question.riskWeighting/2">-->
-        <!--<img src="../../assets/happyFace.png" style="width: 50px; height: 50px">-->
-        <!--</div>-->
-        <!--<br>-->
-        </ul>
-    </div>
-
-    <div class="row">
-      <div class="col-md-8">
-        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  <div class="col-md-8">
+    <ul class="list-group" *ngFor="let question of questions  | paginate: {itemsPerPage: itemsPerPage, currentPage: p}; let i = index">
+      <div class = "row">
+      <li class="list-group-item">
+        {{question.title}}
+          <span class="glyphicon glyphicon-info-sign pull-right" mdTooltipPosition="below" mdTooltip={{question.guidance}}></span>
+      </li>
+      <!--<div id="slider">-->
+        <!--<input type="range" *ngif="answers[i]" min="0" [max]="question.riskWeighting" step=".1" [(ngModel)]="answers[i].userAnswer" (change)="updateValue(i)">-->
+      <!--</div>-->
+      <div *ngIf="answers[i]; else elseBlock" id="slider">
+        <input type="range" min="0" [max]="question.riskWeighting" step=".1" [(ngModel)]="answers[i].userAnswer" (change)="updateValue(i)">
       </div>
-      <div class="col-md-4">
-        <div class="col-md-4">
-          <select
-          required
-          [(ngModel)] ="itemsPerPage">
-          <option
-          *ngFor="let options of possibleValuesPerPage"
-          [value]="options" (change)="checkItems(options)">{{options}}</option>
-          </select>
-        </div>
+      <ng-template #elseBlock>
+        <input type="range" min="0" [max]="question.riskWeighting" #valueTracker value="0" step=".1" (change)="saveNewAnswer(valueTracker.value, i)">
+      </ng-template>
+      <!--<div *ngIf="answer.previousAnswer < question.riskWeighting/2">-->
+      <!--<img src="../../assets/superthumb.jpg" style="width: 50px; height: 50px">-->
+      <!--</div>-->
+      <!--<div *ngIf="answer.previousAnswer === question.riskWeighting/2">-->
+      <!--<img src="../../assets/neutralFace.png" style="width: 50px; height: 50px">-->
+      <!--</div>-->
+      <!--<div *ngIf="answer.previousAnswer > question.riskWeighting/2">-->
+      <!--<img src="../../assets/happyFace.png" style="width: 50px; height: 50px">-->
+      <!--</div>-->
+      <!--<br>-->
+      </div>
+      </ul>
+      <div class="row">
         <div class="col-md-8">
-          <button class="btn btn-primary" (click)="onSave()">Save Answers</button>
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+        <div class="col-md-4">
+          <div class="col-md-4">
+            <select
+              required
+              [(ngModel)] ="itemsPerPage">
+              <option
+                *ngFor="let options of possibleValuesPerPage"
+                [value]="options" (change)="checkItems(options)">{{options}}</option>
+            </select>
+          </div>
+          <div class="col-md-8">
+            <button class="btn btn-primary" (click)="onSave()">Save Answers</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="col-md-1"></div>
 </div>
 
 <button routerLink="/">Navigate away</button>
